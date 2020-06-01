@@ -11,7 +11,7 @@ build --strategy=AngularTemplateCompile=worker
 #
 # Instead, the output will appear in `dist/bin`. You'll need to ignore the
 # `bazel-out` directory that is created in the workspace root.
-build --symlink_prefix=dist/
+build --symlink_prefix=dist-bazel/
 
 # Turn on --incompatible_strict_action_env which was on by default
 # in Bazel 0.21.0 but turned off again in 0.22.0. Follow
