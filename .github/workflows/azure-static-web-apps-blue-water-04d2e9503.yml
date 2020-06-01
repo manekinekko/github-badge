@@ -16,17 +16,6 @@ jobs:
     name: Build and Deploy Job
     steps:
     - uses: actions/checkout@v2
-
-    - name: Node 12
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12
-
-    - name: Build App
-      run: |
-        npm ci
-        npm run build
-        cp -r dist-bazel/bin/src/prodapp dist
     
     - name: Deploy
       id: builddeploy
@@ -35,11 +24,9 @@ jobs:
         azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BLUE_WATER_04D2E9503 }}
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         action: 'upload'
-        app_location: 'dist'
+        app_location: '/'
         api_location: ''
-        app_artifact_location: '/'
-      env:
-        DISABLE_NODEJS_BUILD: true
+        app_artifact_location: 'dist/angular-auth0-swa'
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
