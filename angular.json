@@ -104,6 +104,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-auth0-swa"
+    }
+  },
+  "defaultProject": "angular-auth0-swa",
+  "cli": {
+    "analytics": false
+  }
 }
