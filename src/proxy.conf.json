@@ -1,0 +1,14 @@
+{
+  "/api/*": {
+    "target": "https://blue-water-04d2e9503.azurestaticapps.net/api",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/.auth/me": {
+    "target": "https://blue-water-04d2e9503.azurestaticapps.net/.auth/me",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
