@@ -8,7 +8,7 @@ export const environment = {
     domain: "angular-auth0-swa.eu.auth0.com",
     client_id: "WxrYbaBZMcZNxKtkbQq29zpxaOuJG4Jr"
   },
-  swa: {
+  swaAuth: {
     domain: "https://githubadge.staticweb.app",
     github: {
       login: "/.auth/github/login",

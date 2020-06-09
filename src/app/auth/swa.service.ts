@@ -28,12 +28,12 @@ export class AuthSWAService implements Auth {
     this.handleAuthCallback();
   }
   login(redirect = "/") {
-    const url = environment?.swa?.github?.login;
+    const url = environment?.swaAuth?.github?.login;
     this.location.go(url);
   }
 
   logout() {
-    const url = environment?.swa?.github?.logout;
+    const url = environment?.swaAuth?.github?.logout;
     this.location.go(url);
   }
 
