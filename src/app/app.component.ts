@@ -6,7 +6,6 @@ import { AuthService } from "./auth0.service";
   template: `
     <header>
       <a routerLink="/">
-        <img src="assets/angular-logo.svg" width="28px" />
         <span>GITHU</span><span>BADGE</span>
       </a>
       <span></span>
@@ -47,7 +46,7 @@ import { AuthService } from "./auth0.service";
         border: 1px solid white;
         background: transparent;
         color: white;
-        padding: 0 15px;
+        padding: 5px 15px;
       }
     `,
   ],
