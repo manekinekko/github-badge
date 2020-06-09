@@ -1,19 +1,19 @@
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import createAuth0Client from "@auth0/auth0-spa-js";
 import Auth0Client from "@auth0/auth0-spa-js/dist/typings/Auth0Client";
-import { from, of, Observable, BehaviorSubject, combineLatest, throwError } from "rxjs";
-import { tap, catchError, concatMap, shareReplay } from "rxjs/operators";
-import { Router } from "@angular/router";
-
-import { environment } from "../environments/environment";
+import { BehaviorSubject, combineLatest, from, Observable, of, throwError } from "rxjs";
+import { catchError, concatMap, shareReplay, tap } from "rxjs/operators";
+import { environment } from "../../environments/environment";
+import { Auth } from "./auth.interface";
 
 // Code adapted from https://auth0.com/docs/quickstart/spa/angular2/01-login#add-the-authentication-service
 
 @Injectable({
   providedIn: "root",
 })
-export class AuthService {
-  auth0Client$ = (from(
+export class AuthService implements Auth {
+  private auth0Client$ = (from(
     createAuth0Client({
       ...environment.auth0,
       redirect_uri: `${window.location.origin}`,
@@ -23,12 +23,12 @@ export class AuthService {
     catchError((err) => throwError(err))
   );
 
-  isAuthenticated$ = this.auth0Client$.pipe(
+  public isAuthenticated$ = this.auth0Client$.pipe(
     concatMap((client: Auth0Client) => from(client.isAuthenticated())),
     tap((res) => (this.loggedIn = res))
   );
 
-  handleRedirectCallback$ = this.auth0Client$.pipe(
+  private handleRedirectCallback$ = this.auth0Client$.pipe(
     concatMap((client: Auth0Client) => from(client.handleRedirectCallback()))
   );
 

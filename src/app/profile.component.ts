@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import { mergeMap } from "rxjs/operators";
-import { AuthService } from "./auth0.service";
-import { GithubService } from "./github.service";
+import { AuthService } from "./auth/auth0.service";
+import { GithubService } from "./auth/github.service";
 
 @Component({
   selector: "app-profile",

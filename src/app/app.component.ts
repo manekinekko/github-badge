@@ -1,15 +1,14 @@
 import { Component } from "@angular/core";
-import { AuthService } from "./auth0.service";
+import { AuthService } from "./auth/auth0.service";
 
 @Component({
   selector: "app-root",
   template: `
     <header>
-      <a routerLink="/">
-        <span>GITHU</span><span>BADGE</span>
-      </a>
+      <a routerLink="/"> <span>GITHU</span><span>BADGE</span> </a>
       <span></span>
-      <button (click)="auth.logout()" *ngIf="auth.loggedIn">LOG OUT</button>
+      <!-- <button class="btn" (click)="auth.logout()" *ngIf="auth.loggedIn">LOG OUT</button> -->
+      <a class="btn" [href]="authLogout" *ngIf="auth.loggedIn">LOG OUT</a>
     </header>
     <router-outlet></router-outlet>
   `,
@@ -19,14 +18,14 @@ import { AuthService } from "./auth0.service";
         height: 100%;
         width: 100%;
       }
-      
+
       header {
         background-color: black;
         color: white;
         display: flex;
         padding: 10px;
       }
-      
+
       header span {
         flex: 1;
       }
@@ -42,7 +41,7 @@ import { AuthService } from "./auth0.service";
         color: lightcoral;
       }
 
-      button {
+      .btn {
         border: 1px solid white;
         background: transparent;
         color: white;
@@ -55,4 +54,8 @@ export class AppComponent {
   constructor(public auth: AuthService) {}
 
   ngOnInit() {}
+
+  logout() {
+    this.auth.logout();
+  }
 }

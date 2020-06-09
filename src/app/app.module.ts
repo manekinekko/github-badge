@@ -1,30 +1,34 @@
-import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-
-import { AppComponent } from "./app.component";
-import { ProfileComponent } from "./profile.component";
-import { HomeComponent } from "./home.component";
-
+import { BrowserModule } from "@angular/platform-browser";
 import { RouterModule } from "@angular/router";
 import { Animate3dDirective } from "./animate-3d.directive";
-
-import { AuthGuard } from "./auth0.guard";
+import { AppComponent } from "./app.component";
+import { AuthGuard } from "./auth/auth0.guard";
+import { AuthService } from "./auth/auth0.service";
+import { AuthSWAService } from "./auth/swa.service";
+import { HomeComponent } from "./home.component";
+import { ProfileComponent } from "./profile.component";
 
 @NgModule({
   declarations: [AppComponent, ProfileComponent, HomeComponent, Animate3dDirective],
   imports: [
     BrowserModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent },
+      { path: "", component: HomeComponent },
       {
         path: "profile",
         component: ProfileComponent,
         canActivate: [AuthGuard],
       },
-      { path: '**', pathMatch: 'full', redirectTo: '/' }
+      { path: "**", pathMatch: "full", redirectTo: "/" },
     ]),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: AuthService,
+      useClass: AuthSWAService,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

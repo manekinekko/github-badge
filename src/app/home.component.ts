@@ -1,16 +1,16 @@
 import { Component } from "@angular/core";
-import { AuthService } from "./auth0.service";
+import { AuthService } from "./auth/auth0.service";
 
 @Component({
   selector: "app-home",
   template: `
     <app-profile>
-      <button (click)="auth.login('/profile')" *ngIf="!auth.loggedIn">Log In</button>
+      <button class="btn" (click)="login()" *ngIf="!auth.loggedIn">LOG IN</button>
     </app-profile>
   `,
   styles: [
     `
-      button {
+      .btn {
         position: absolute;
         top: 45%;
         left: 50%;
@@ -22,6 +22,8 @@ import { AuthService } from "./auth0.service";
         color: white;
         border-radius: 4px;
         padding: 20px;
+        text-align: center;
+        text-decoration: none;
       }
     `,
   ],
@@ -30,4 +32,8 @@ export class HomeComponent {
   constructor(public auth: AuthService) {}
 
   ngOnInit() {}
+
+  login() {
+    this.auth.login("/profile");
+  }
 }
