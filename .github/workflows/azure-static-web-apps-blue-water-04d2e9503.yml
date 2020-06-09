@@ -27,7 +27,7 @@ jobs:
         app_location: '/'
         api_location: ''
         app_artifact_location: 'dist/angular-auth0-swa'
-        routes_location: 'src/assets/routes.json'
+        routes_location: 'src/assets'
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
