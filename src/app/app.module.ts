@@ -24,6 +24,7 @@ import { ProfileComponent } from "./profile.component";
     ]),
   ],
   providers: [
+    { provide: Window, useValue: window },
     {
       provide: AuthService,
       useClass: AuthSWAService,

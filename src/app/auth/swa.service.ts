@@ -1,7 +1,6 @@
-import { Location } from "@angular/common";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, from, Observable, throwError, combineLatest } from "rxjs";
-import { catchError, shareReplay, concatMap, tap } from "rxjs/operators";
+import { BehaviorSubject, combineLatest, from, Observable, throwError } from "rxjs";
+import { catchError, concatMap, shareReplay, tap } from "rxjs/operators";
 import { environment } from "../../environments/environment";
 import { Auth, ClientPrincipal } from "./auth.interface";
 
@@ -24,17 +23,17 @@ export class AuthSWAService implements Auth {
   public userProfile$ = this.userProfileSubject$.asObservable();
   public loggedIn: boolean = null;
 
-  constructor(private location: Location) {
-    this.handleAuthCallback();
+  constructor(private window: Window) {
+    // this.handleAuthCallback();
   }
   login(redirect = "/") {
     const url = environment?.swaAuth?.github?.login;
-    this.location.go(url);
+    this.window.location.href = url;
   }
 
   logout() {
     const url = environment?.swaAuth?.github?.logout;
-    this.location.go(url);
+    this.window.location.href = url;
   }
 
   getUser$(options?) {
@@ -59,7 +58,7 @@ export class AuthSWAService implements Auth {
     );
 
     authComplete$.subscribe(([user, loggedIn]) => {
-      this.location.go("/profile");
+      this.window.location.href = "/profile";
     });
   }
 }

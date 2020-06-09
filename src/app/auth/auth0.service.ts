@@ -16,7 +16,7 @@ export class AuthService implements Auth {
   private auth0Client$ = (from(
     createAuth0Client({
       ...environment.auth0,
-      redirect_uri: `${window.location.origin}`,
+      redirect_uri: `${this.window.location.origin}`,
     })
   ) as Observable<Auth0Client>).pipe(
     shareReplay(1),
@@ -36,7 +36,7 @@ export class AuthService implements Auth {
   userProfile$ = this.userProfileSubject$.asObservable();
   loggedIn: boolean = null;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private window: Window) {
     this.localAuthSetup();
     this.handleAuthCallback();
   }
@@ -63,14 +63,14 @@ export class AuthService implements Auth {
   login(redirectPath: string = "/") {
     this.auth0Client$.subscribe((client: Auth0Client) => {
       client.loginWithRedirect({
-        redirect_uri: `${window.location.origin}`,
+        redirect_uri: `${this.window.location.origin}`,
         appState: { target: redirectPath },
       });
     });
   }
 
   private handleAuthCallback() {
-    const params = window.location.search;
+    const params = this.window.location.search;
     if (params.includes("code=") && params.includes("state=")) {
       let targetRoute: string;
       const authComplete$ = this.handleRedirectCallback$.pipe(
@@ -92,7 +92,7 @@ export class AuthService implements Auth {
     this.auth0Client$.subscribe((client: Auth0Client) => {
       client.logout({
         ...environment.auth0,
-        returnTo: `${window.location.origin}`,
+        returnTo: `${this.window.location.origin}`,
       });
     });
   }
