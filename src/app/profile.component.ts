@@ -1,18 +1,37 @@
-import { Component, OnInit, Input, HostListener, ViewChild, ElementRef, Renderer2 } from "@angular/core";
-import { AuthService } from "./auth.service";
-import { Observable } from 'rxjs';
+import { Component, OnInit } from "@angular/core";
+import { Observable } from "rxjs";
+import { mergeMap } from "rxjs/operators";
+import { AuthService } from "./auth0.service";
+import { GithubService } from "./github.service";
 
 @Component({
   selector: "app-profile",
   template: `
-    <div class="container" animate3d>
-      <div class="card-profile" *ngIf="userProfile$ | async as profile">
-        <div class="card-profile-image" [style.background-image]="'url(' + profile.picture + ')'"></div>
-        <div class="card-profile-info">
-          <h2 class="infos_name">{{ profile.name }}</h2>
-          <p class="infos_nick">@{{ profile.nickname }}</p>
+    <div class="container" animate3d *ngIf="userProfile$ | async as profile">
+      <div class="card-profile">
+        <div class="card-profile-image" [style.background-image]="'url(' + profile?.avatar_url + ')'"></div>
+        <div class="card-profile-info" *ngIf="profile?.name; else loginTemplate">
+          <h2 class="infos_name">{{ profile?.name }}</h2>
+          <p class="infos_nick">
+            <a [href]="profile?.html_url">@{{ profile?.login }}</a>
+          </p>
         </div>
+
+        <ng-template #loginTemplate>
+          <ng-content> </ng-content>
+        </ng-template>
       </div>
+      <ul>
+        <li>
+          <span>Followers</span><b>{{ profile?.followers }}</b>
+        </li>
+        <li>
+          <span>Repos</span><b>{{ profile?.public_repos }}</b>
+        </li>
+        <li>
+          <span>Gists</span><b>{{ profile?.public_gists }}</b>
+        </li>
+      </ul>
     </div>
   `,
   styles: [
@@ -25,11 +44,11 @@ import { Observable } from 'rxjs';
         align-items: center;
         perspective: 25px;
       }
-      
+
       h2 {
         margin: 0;
       }
-      
+
       .container {
         transition: transform 0.2s;
         display: block;
@@ -69,20 +88,54 @@ import { Observable } from 'rxjs';
         bottom: 0;
         line-height: 10px;
       }
+
+      .card-profile-info a {
+        color: #e3f1f5;
+      }
+
+      ul {
+        position: absolute;
+        width: 100%;
+        top: calc(70% + 4em);
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        flex: 1;
+        text-align: center;
+      }
+
+      li span {
+        display: block;
+        float: left;
+        clear: both;
+        width: 100%;
+        color: #b3b1b2;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: -0.2px;
+      }
+
+      li b {
+        font-size: 26px;
+        color: #5e5e5e;
+        padding: 0.18em 0;
+        display: inline-block;
+      }
     `,
   ],
 })
 export class ProfileComponent implements OnInit {
   userProfile$: Observable<any>;
 
-
-  constructor(public auth: AuthService) {
-    this.userProfile$ = auth.userProfile$;
+  constructor(public auth: AuthService, private github: GithubService) {
+    this.userProfile$ = this.auth.userProfile$.pipe(
+      mergeMap((userProfile) => this.github.getGithubUserInfo(userProfile?.nickname))
+    );
   }
 
-  ngOnInit(): void {
-    
-  }
-
-  
+  async ngOnInit() {}
 }

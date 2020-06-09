@@ -8,10 +8,10 @@ import { HomeComponent } from "./home.component";
 import { RouterModule } from "@angular/router";
 import { Animate3dDirective } from "./animate-3d.directive";
 
-import { AuthGuard } from "./auth.guard";
+import { AuthGuard } from "./auth0.guard";
 
 @NgModule({
-  declarations: [AppComponent, ProfileComponent, Animate3dDirective],
+  declarations: [AppComponent, ProfileComponent, HomeComponent, Animate3dDirective],
   imports: [
     BrowserModule,
     RouterModule.forRoot([

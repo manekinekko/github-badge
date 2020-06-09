@@ -1,20 +1,33 @@
-import { Component } from '@angular/core';
-import { AuthService } from './auth.service';
-import { Router } from '@angular/router';
+import { Component } from "@angular/core";
+import { AuthService } from "./auth0.service";
 
 @Component({
-  selector: 'app-root',
+  selector: "app-home",
   template: `
-    home
+    <app-profile>
+      <button (click)="auth.login('/profile')" *ngIf="!auth.loggedIn">Log In</button>
+    </app-profile>
   `,
-  styles: [`
-  `]
+  styles: [
+    `
+      button {
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        width: 200px;
+        margin-left: -100px;
+        font-size: 1.6em;
+        background: transparent;
+        border: 2px solid white;
+        color: white;
+        border-radius: 4px;
+        padding: 20px;
+      }
+    `,
+  ],
 })
 export class HomeComponent {
-  constructor() {
-    
-  }
+  constructor(public auth: AuthService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }
