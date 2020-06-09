@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, HostListener, ViewChild, ElementRef, Renderer2 } from "@angular/core";
 import { AuthService } from "./auth.service";
+import { Observable } from 'rxjs';
 
 @Component({
   selector: "app-profile",
@@ -72,10 +73,12 @@ import { AuthService } from "./auth.service";
   ],
 })
 export class ProfileComponent implements OnInit {
-  @Input("user") userProfile$;
+  userProfile$: Observable<any>;
 
 
-  constructor() {}
+  constructor(public auth: AuthService) {
+    this.userProfile$ = auth.userProfile$;
+  }
 
   ngOnInit(): void {
     
