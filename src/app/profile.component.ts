@@ -67,13 +67,18 @@ import { GithubService } from "./github.service";
       }
 
       .card-profile-image {
-        background-position: top;
-        background-size: cover;
+        transition: background-size 0.2s;
+        background-position: center;
+        background-size: 420px;
         height: 400px;
         position: relative;
         opacity: 0.5;
         mix-blend-mode: lighten;
         filter: grayscale(100%);
+        background-repeat: no-repeat;
+      }
+      .container.hover .card-profile-image {
+        background-size: 430px;
       }
 
       .card-profile-info {
