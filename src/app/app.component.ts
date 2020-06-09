@@ -9,7 +9,7 @@ import { AuthService } from "./auth0.service";
         <span>GITHU</span><span>BADGE</span>
       </a>
       <span></span>
-      <button (click)="auth.logout()" *ngIf="auth.loggedIn">Log Out</button>
+      <button (click)="auth.logout()" *ngIf="auth.loggedIn">LOG OUT</button>
     </header>
     <router-outlet></router-outlet>
   `,
