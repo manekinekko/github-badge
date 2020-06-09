@@ -11,7 +11,7 @@ export const environment = {
   swaAuth: {
     domain: "https://githubadge.staticweb.app",
     github: {
-      login: "/.auth/github/login",
+      login: "/.auth/login/github",
       logout: "/.auth/logout",
     },
   }
