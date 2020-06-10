@@ -1,8 +1,0 @@
-{
-  "/.auth/me": {
-    "target": "http://localhost:7071",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  }
-}
