@@ -1,11 +1,11 @@
-import { Component } from "@angular/core";
+import { Component, HostListener, ViewChild, ElementRef } from "@angular/core";
 import { AuthService } from "./auth/auth0.service";
 
 @Component({
   selector: "app-home",
   template: `
     <app-profile>
-      <button class="btn" (click)="login()" *ngIf="!auth.loggedIn">LOG IN</button>
+      <button #btn class="btn" (click)="login()" *ngIf="!auth.loggedIn">LOG IN</button>
     </app-profile>
   `,
   styles: [
@@ -25,10 +25,16 @@ import { AuthService } from "./auth/auth0.service";
         text-align: center;
         text-decoration: none;
       }
+
+      .btn.auth0 {
+        border-color: lightcoral;
+      }
     `,
   ],
 })
 export class HomeComponent {
+  @ViewChild("btn", {}) btn: ElementRef<HTMLButtonElement>;
+
   constructor(public auth: AuthService, private window: Window) {
     this.auth.isAuthenticated$.subscribe((isAuthenticated) => {
       if (isAuthenticated) {
@@ -37,7 +43,31 @@ export class HomeComponent {
     });
   }
 
-  ngOnInit() {}
+  @HostListener("window:keydown", ["$event"])
+  checkButtonStyle(event) {
+    if (event.shiftKey) {
+      let useAuth0 = localStorage.getItem("auth0");
+      if (useAuth0) {
+        localStorage.removeItem("auth0");
+      } else {
+        localStorage.setItem("auth0", "true");
+      }
+      this.updateButtonStyle(!!useAuth0);
+    }
+  }
+
+  updateButtonStyle(useAuth0: boolean) {
+    if (useAuth0) {
+      this.btn.nativeElement.classList.add("auth0");
+    } else {
+      this.btn.nativeElement.classList.remove("auth0");
+    }
+  }
+
+  ngAfterViewInit() {
+    let useAuth0 = localStorage.getItem("auth0");
+    this.updateButtonStyle(!!useAuth0);
+  }
 
   login() {
     this.auth.login("/profile");
