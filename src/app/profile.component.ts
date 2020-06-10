@@ -162,9 +162,9 @@ export class ProfileComponent {
 
   updateButtonStyle(useAuth0: boolean) {
     if (useAuth0) {
-      this.btn.nativeElement.classList.add("auth0");
+      this.btn?.nativeElement.classList.add("auth0");
     } else {
-      this.btn.nativeElement.classList.remove("auth0");
+      this.btn?.nativeElement.classList.remove("auth0");
     }
   }
 }
