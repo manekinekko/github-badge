@@ -24,7 +24,7 @@ export class AuthSWAService implements Auth {
   public loggedIn: boolean = null;
 
   constructor(private window: Window) {
-    // this.handleAuthCallback();
+    this.handleAuthCallback();
   }
   login(redirect = "/") {
     const url = environment?.swaAuth?.github?.login;
@@ -41,7 +41,7 @@ export class AuthSWAService implements Auth {
   }
 
   async authProvider(): Promise<ClientPrincipal> {
-    const response = await fetch("/.auth/me");
+    const response = await fetch("/.auth/me?post_login_redirect_uri=/profile");
     const payload = (await response.json()) as { clientPrincipal: ClientPrincipal };
     const { clientPrincipal } = payload;
     return {
@@ -51,6 +51,7 @@ export class AuthSWAService implements Auth {
   }
 
   private handleAuthCallback() {
+    // debugger;
     const authComplete$ = this.handleRedirectCallback$.pipe(
       concatMap(() => {
         return combineLatest([this.getUser$(), this.isAuthenticated$]);
@@ -58,7 +59,7 @@ export class AuthSWAService implements Auth {
     );
 
     authComplete$.subscribe(([user, loggedIn]) => {
-      this.window.location.href = "/profile";
+      // this.window.location.href = "/profile";
     });
   }
 }

@@ -29,7 +29,13 @@ import { AuthService } from "./auth/auth0.service";
   ],
 })
 export class HomeComponent {
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService, private window: Window) {
+    this.auth.isAuthenticated$.subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        this.window.location.href = "/profile";
+      }
+    });
+  }
 
   ngOnInit() {}
 
