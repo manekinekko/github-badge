@@ -26,14 +26,14 @@ export class AuthSWAService implements Auth {
   constructor(private window: Window) {
     this.handleAuthCallback();
   }
-  login(redirect = "/") {
+  login(redirect = "/profile") {
     const url = environment?.swaAuth?.github?.login;
-    this.window.location.href = url;
+    this.window.location.href = `${url}?post_login_redirect_uri=${redirect}`;
   }
 
-  logout() {
+  logout(redirect = "/") {
     const url = environment?.swaAuth?.github?.logout;
-    this.window.location.href = url;
+    this.window.location.href = `${url}?post_logout_redirect_uri=${redirect}`;
   }
 
   getUser$(options?) {
@@ -41,7 +41,7 @@ export class AuthSWAService implements Auth {
   }
 
   async authProvider(): Promise<ClientPrincipal> {
-    const response = await fetch("/.auth/me?post_login_redirect_uri=/profile");
+    const response = await fetch("/.auth/me");
     const payload = (await response.json()) as { clientPrincipal: ClientPrincipal };
     const { clientPrincipal } = payload;
     return {
