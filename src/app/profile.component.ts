@@ -68,7 +68,7 @@ import { StateXService } from "./statex.service";
       }
 
       .card-profile-image {
-        transition: background-size 0.2s;
+        transition: background-size 0.5s;
         background-position: center;
         background-size: 420px;
         height: 400px;
@@ -79,7 +79,7 @@ import { StateXService } from "./statex.service";
         background-repeat: no-repeat;
       }
       .container.hover .card-profile-image {
-        background-size: 430px;
+        background-size: 480px;
       }
 
       .card-profile-info {

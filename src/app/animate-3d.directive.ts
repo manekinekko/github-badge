@@ -21,17 +21,20 @@ export class Animate3dDirective implements OnInit {
   }
 
   @HostListener("mouseenter")
+  @HostListener("touchstart")
   private onMouseEnterHandler(event: MouseEvent) {
     this.update(event);
   }
 
   @HostListener("mouseleave")
+  @HostListener("touchend")
   private onMouseLeaveHandler() {
     this.renderer.setStyle(this.card.nativeElement, "transform", null);
     this.renderer.removeClass(this.card.nativeElement, 'hover');
   }
 
   @HostListener("mousemove")
+  @HostListener("touchmove")
   private onMouseMoveHandler(event: MouseEvent) {
     if (this.shouldUpdate()) {
       this.update(event);
@@ -56,7 +59,11 @@ export class Animate3dDirective implements OnInit {
   }
 
   private updatePosition(event: any) {
-    const evt = event || window.event;
+    let evt = event || window.event;
+    if (evt.touches) {
+      evt = evt.touches[0];
+    }
+    
     this.mouse.x = evt.clientX - this.mouse._x;
     this.mouse.y = (evt.clientY - this.mouse._y) * -1;
   }
