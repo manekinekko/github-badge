@@ -1,5 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, HostListener } from "@angular/core";
 import { AuthService } from "./auth/auth0.service";
+import { StateXService } from "./statex.service";
 
 @Component({
   selector: "app-root",
@@ -50,9 +51,21 @@ import { AuthService } from "./auth/auth0.service";
   ],
 })
 export class AppComponent {
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService, private state: StateXService) {}
 
-  ngOnInit() {}
+  @HostListener("window:keydown", ["$event"])
+  checkButtonStyle(event) {
+    if (event.shiftKey) {
+      let useAuth0 = localStorage.getItem("auth0");
+      if (useAuth0) {
+        localStorage.removeItem("auth0");
+        this.state.next(false);
+      } else {
+        localStorage.setItem("auth0", "true");
+        this.state.next(true);
+      }
+    }
+  }
 
   logout() {
     this.auth.logout();

@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild, ElementRef } from "@angular/core";
+import { Component } from "@angular/core";
 import { AuthService } from "./auth/auth0.service";
 
 @Component({
@@ -33,41 +33,7 @@ import { AuthService } from "./auth/auth0.service";
   ],
 })
 export class HomeComponent {
-  @ViewChild("btn", {}) btn: ElementRef<HTMLButtonElement>;
-
-  constructor(public auth: AuthService, private window: Window) {
-    this.auth.isAuthenticated$.subscribe((isAuthenticated) => {
-      if (isAuthenticated) {
-        this.window.location.href = "/profile";
-      }
-    });
-  }
-
-  @HostListener("window:keydown", ["$event"])
-  checkButtonStyle(event) {
-    if (event.shiftKey) {
-      let useAuth0 = localStorage.getItem("auth0");
-      if (useAuth0) {
-        localStorage.removeItem("auth0");
-      } else {
-        localStorage.setItem("auth0", "true");
-      }
-      this.updateButtonStyle(!!useAuth0);
-    }
-  }
-
-  updateButtonStyle(useAuth0: boolean) {
-    if (useAuth0) {
-      this.btn.nativeElement.classList.add("auth0");
-    } else {
-      this.btn.nativeElement.classList.remove("auth0");
-    }
-  }
-
-  ngAfterViewInit() {
-    let useAuth0 = localStorage.getItem("auth0");
-    this.updateButtonStyle(!!useAuth0);
-  }
+  constructor(public auth: AuthService) {}
 
   login() {
     this.auth.login("/profile");

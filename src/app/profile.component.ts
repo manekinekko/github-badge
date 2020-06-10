@@ -1,8 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ContentChild, ElementRef, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import { mergeMap } from "rxjs/operators";
 import { AuthService } from "./auth/auth0.service";
 import { GithubService } from "./auth/github.service";
+import { StateXService } from "./statex.service";
 
 @Component({
   selector: "app-profile",
@@ -18,7 +19,7 @@ import { GithubService } from "./auth/github.service";
         </div>
 
         <ng-template #loginTemplate>
-          <ng-content> </ng-content>
+          <ng-content></ng-content>
         </ng-template>
       </div>
       <ul>
@@ -133,14 +134,37 @@ import { GithubService } from "./auth/github.service";
     `,
   ],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent {
+  @ContentChild("btn") btn: ElementRef<HTMLButtonElement>;
+  // @ContentChild(TemplateRef) btn: ElementRef<any>;
+
   userProfile$: Observable<any>;
 
-  constructor(public auth: AuthService, private github: GithubService) {
+  constructor(
+    public auth: AuthService,
+    private github: GithubService,
+    private win: Window,
+    private state: StateXService
+  ) {
     this.userProfile$ = this.auth.userProfile$.pipe(
       mergeMap((userProfile) => this.github.getGithubUserInfo(userProfile?.nickname))
     );
+
+    this.state.subscribe((useAuth0) => {
+      this.updateButtonStyle(useAuth0);
+    });
   }
 
-  async ngOnInit() {}
+  ngAfterContentInit() {
+    const useAuth0 = this.win.localStorage.getItem("auth0");
+    this.updateButtonStyle(!!useAuth0);
+  }
+
+  updateButtonStyle(useAuth0: boolean) {
+    if (useAuth0) {
+      this.btn.nativeElement.classList.add("auth0");
+    } else {
+      this.btn.nativeElement.classList.remove("auth0");
+    }
+  }
 }

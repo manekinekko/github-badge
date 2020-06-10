@@ -41,25 +41,26 @@ export class AuthSWAService implements Auth {
   }
 
   async authProvider(): Promise<ClientPrincipal> {
-    const response = await fetch("/.auth/me");
-    const payload = (await response.json()) as { clientPrincipal: ClientPrincipal };
-    const { clientPrincipal } = payload;
-    return {
-      ...clientPrincipal,
-      nickname: clientPrincipal.userDetails,
-    };
+    try {
+      const response = await fetch("/.auth/me");
+      const payload = (await response.json()) as { clientPrincipal: ClientPrincipal };
+      const { clientPrincipal } = payload;
+      return {
+        ...clientPrincipal,
+        nickname: clientPrincipal.userDetails,
+      };
+    } catch (error) {
+      return null;
+    }
   }
 
   private handleAuthCallback() {
-    // debugger;
     const authComplete$ = this.handleRedirectCallback$.pipe(
       concatMap(() => {
         return combineLatest([this.getUser$(), this.isAuthenticated$]);
       })
     );
 
-    authComplete$.subscribe(([user, loggedIn]) => {
-      // this.window.location.href = "/profile";
-    });
+    authComplete$.subscribe(([user, loggedIn]) => {});
   }
 }

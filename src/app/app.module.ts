@@ -1,13 +1,13 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { RouterModule, Router } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { Animate3dDirective } from "./animate-3d.directive";
 import { AppComponent } from "./app.component";
-import { AuthGuard } from "./auth/auth0.guard";
+import { authFactory } from "./auth/auth.factory";
+import { AuthGuard } from "./auth/auth.guard";
 import { AuthService } from "./auth/auth0.service";
 import { HomeComponent } from "./home.component";
 import { ProfileComponent } from "./profile.component";
-import { authFactory } from "./auth/auth.factory";
 
 @NgModule({
   declarations: [AppComponent, ProfileComponent, HomeComponent, Animate3dDirective],
@@ -28,7 +28,7 @@ import { authFactory } from "./auth/auth.factory";
     {
       provide: AuthService,
       useFactory: authFactory,
-      deps: [Router, Window]
+      deps: [Router, Window],
     },
   ],
   bootstrap: [AppComponent],
