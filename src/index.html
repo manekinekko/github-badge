@@ -18,13 +18,26 @@
       footer a {
         color: lightcoral;
       }
+      footer span {
+        color: lightgray;
+      }
     </style>
   </head>
   <body>
     <app-root></app-root>
     <footer>
-      Built with ❤️ by Wassim Chegham (<a href="https://twitter.com/manekinekko">@manekinekko</a>)<br>
-      –_BUILD_HASH_–
+      Built with ❤️ by Wassim Chegham (<a href="https://twitter.com/manekinekko">@manekinekko</a>)<br />
+      <span>_BUILD_HASH_</span>
     </footer>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169244920-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-169244920-1");
+    </script>
   </body>
 </html>
